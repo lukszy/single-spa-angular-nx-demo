@@ -1,0 +1,20 @@
+{
+  "extends": "../../tslint.json",
+  "rules": {
+    "directive-selector": [
+      true,
+      "attribute",
+      "singleSpaAngularTest",
+      "camelCase"
+    ],
+    "component-selector": [
+      true,
+      "element",
+      "single-spa-angular-test",
+      "kebab-case"
+    ]
+  },
+  "linterOptions": {
+    "exclude": ["!**/*"]
+  }
+}

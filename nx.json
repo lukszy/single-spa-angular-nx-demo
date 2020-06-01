@@ -1,0 +1,44 @@
+{
+  "npmScope": "single-spa-angular-test",
+  "implicitDependencies": {
+    "angular.json": "*",
+    "package.json": {
+      "dependencies": "*",
+      "devDependencies": "*"
+    },
+    "tsconfig.json": "*",
+    "tslint.json": "*",
+    "nx.json": "*"
+  },
+  "tasksRunnerOptions": {
+    "default": {
+      "runner": "@nrwl/workspace/tasks-runners/default",
+      "options": {
+        "cacheableOperations": ["build", "lint", "test", "e2e"]
+      }
+    }
+  },
+  "projects": {
+    "host": {
+      "tags": []
+    },
+    "host-e2e": {
+      "tags": [],
+      "implicitDependencies": ["host"]
+    },
+    "micro-app": {
+      "tags": []
+    },
+    "micro-app1": {
+      "tags": []
+    },
+    "micro-app-e2e": {
+      "tags": [],
+      "implicitDependencies": ["micro-app"]
+    },
+    "micro-app1-e2e": {
+      "tags": [],
+      "implicitDependencies": ["micro-app1"]
+    }
+  }
+}

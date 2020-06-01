@@ -1,0 +1,404 @@
+{
+  "version": 1,
+  "projects": {
+    "host": {
+      "projectType": "application",
+      "schematics": {
+        "@nrwl/angular:component": {
+          "style": "scss"
+        }
+      },
+      "root": "apps/host",
+      "sourceRoot": "apps/host/src",
+      "prefix": "single-spa-angular-test",
+      "architect": {
+        "build": {
+          "builder": "@angular-builders/custom-webpack:browser",
+          "options": {
+            "outputPath": "dist/apps",
+            "index": "apps/host/src/index.html",
+            "main": "apps/host/src/main.ts",
+            "polyfills": "apps/host/src/polyfills.ts",
+            "tsConfig": "apps/host/tsconfig.app.json",
+            "aot": true,
+            "assets": ["apps/host/src/favicon.ico", "apps/host/src/assets"],
+            "styles": ["apps/host/src/styles.scss"],
+            "scripts": [
+              "node_modules/rxjs/bundles/rxjs.umd.js",
+              "node_modules/@angular/core/bundles/core.umd.js",
+              "node_modules/@angular/common/bundles/common.umd.js",
+              "node_modules/@angular/common/bundles/common-http.umd.js",
+              "node_modules/@angular/compiler/bundles/compiler.umd.js",
+              "node_modules/@angular/platform-browser/bundles/platform-browser.umd.js",
+              "node_modules/@angular/platform-browser-dynamic/bundles/platform-browser-dynamic.umd.js",
+              "node_modules/@angular/router/bundles/router.umd.js",
+              "node_modules/@angular/forms/bundles/forms.umd.js"
+            ]
+          },
+          "configurations": {
+            "production": {
+              "fileReplacements": [
+                {
+                  "replace": "apps/host/src/environments/environment.ts",
+                  "with": "apps/host/src/environments/environment.prod.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "2mb",
+                  "maximumError": "5mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb",
+                  "maximumError": "10kb"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "proxyConfig": "./apps/host/proxy.conf.json",
+            "browserTarget": "host:build"
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "host:build:production"
+            }
+          }
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "host:build"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "apps/host/tsconfig.app.json",
+              "apps/host/tsconfig.spec.json"
+            ],
+            "exclude": ["**/node_modules/**", "!apps/host/**"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "apps/host/jest.config.js",
+            "tsConfig": "apps/host/tsconfig.spec.json",
+            "passWithNoTests": true,
+            "setupFile": "apps/host/src/test-setup.ts"
+          }
+        }
+      }
+    },
+    "host-e2e": {
+      "root": "apps/host-e2e",
+      "sourceRoot": "apps/host-e2e/src",
+      "projectType": "application",
+      "architect": {
+        "e2e": {
+          "builder": "@nrwl/cypress:cypress",
+          "options": {
+            "cypressConfig": "apps/host-e2e/cypress.json",
+            "tsConfig": "apps/host-e2e/tsconfig.e2e.json",
+            "devServerTarget": "host:serve"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "host:serve:production"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": ["apps/host-e2e/tsconfig.e2e.json"],
+            "exclude": ["**/node_modules/**", "!apps/host-e2e/**"]
+          }
+        }
+      }
+    },
+    "micro-app": {
+      "projectType": "application",
+      "schematics": {
+        "@nrwl/angular:component": {
+          "style": "scss"
+        }
+      },
+      "root": "apps/micro-app",
+      "sourceRoot": "apps/micro-app/src",
+      "prefix": "single-spa-angular-test",
+      "architect": {
+        "build": {
+          "builder": "@angular-builders/custom-webpack:browser",
+          "options": {
+            "customWebpackConfig": {
+              "path": "./apps/micro-app/webpack.config.js"
+            },
+            "outputPath": "dist/apps/micro-app",
+            "index": "apps/micro-app/src/index.html",
+            "main": "apps/micro-app/src/main.ts",
+            "polyfills": "apps/micro-app/src/polyfills.ts",
+            "tsConfig": "apps/micro-app/tsconfig.app.json",
+            "aot": true,
+            "assets": [
+              "apps/micro-app/src/favicon.ico",
+              "apps/micro-app/src/assets"
+            ],
+            "styles": ["apps/micro-app/src/styles.scss"],
+            "scripts": []
+          },
+          "configurations": {
+            "production": {
+              "fileReplacements": [
+                {
+                  "replace": "apps/micro-app/src/environments/environment.ts",
+                  "with": "apps/micro-app/src/environments/environment.prod.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "2mb",
+                  "maximumError": "5mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb",
+                  "maximumError": "10kb"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "builder": "@angular-builders/custom-webpack:dev-server",
+          "options": {
+            "port": 4201,
+            "browserTarget": "micro-app:build"
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "micro-app:build:production"
+            }
+          }
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "micro-app:build"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "apps/micro-app/tsconfig.app.json",
+              "apps/micro-app/tsconfig.spec.json"
+            ],
+            "exclude": ["**/node_modules/**", "!apps/micro-app/**"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "apps/micro-app/jest.config.js",
+            "tsConfig": "apps/micro-app/tsconfig.spec.json",
+            "passWithNoTests": true,
+            "setupFile": "apps/micro-app/src/test-setup.ts"
+          }
+        }
+      }
+    },
+    "micro-app1": {
+      "projectType": "application",
+      "schematics": {
+        "@nrwl/angular:component": {
+          "style": "scss"
+        }
+      },
+      "root": "apps/micro-app1",
+      "sourceRoot": "apps/micro-app1/src",
+      "prefix": "single-spa-angular-test",
+      "architect": {
+        "build": {
+          "builder": "@angular-builders/custom-webpack:browser",
+          "options": {
+            "customWebpackConfig": {
+              "path": "./apps/micro-app1/webpack.config.js"
+            },
+            "outputPath": "dist/apps/micro-app1",
+            "index": "apps/micro-app1/src/index.html",
+            "main": "apps/micro-app1/src/main.ts",
+            "polyfills": "apps/micro-app1/src/polyfills.ts",
+            "tsConfig": "apps/micro-app1/tsconfig.app.json",
+            "aot": true,
+            "assets": [
+              "apps/micro-app1/src/favicon.ico",
+              "apps/micro-app1/src/assets"
+            ],
+            "styles": ["apps/micro-app1/src/styles.scss"],
+            "scripts": []
+          },
+          "configurations": {
+            "production": {
+              "fileReplacements": [
+                {
+                  "replace": "apps/micro-app1/src/environments/environment.ts",
+                  "with": "apps/micro-app1/src/environments/environment.prod.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "2mb",
+                  "maximumError": "5mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb",
+                  "maximumError": "10kb"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "builder": "@angular-builders/custom-webpack:dev-server",
+          "options": {
+            "port": 4202,
+            "browserTarget": "micro-app1:build"
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "micro-app1:build:production"
+            }
+          }
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "micro-app1:build"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "apps/micro-app1/tsconfig.app.json",
+              "apps/micro-app1/tsconfig.spec.json"
+            ],
+            "exclude": ["**/node_modules/**", "!apps/micro-app1/**"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "apps/micro-app1/jest.config.js",
+            "tsConfig": "apps/micro-app1/tsconfig.spec.json",
+            "passWithNoTests": true,
+            "setupFile": "apps/micro-app1/src/test-setup.ts"
+          }
+        }
+      }
+    },
+    "micro-app-e2e": {
+      "root": "apps/micro-app-e2e",
+      "sourceRoot": "apps/micro-app-e2e/src",
+      "projectType": "application",
+      "architect": {
+        "e2e": {
+          "builder": "@nrwl/cypress:cypress",
+          "options": {
+            "cypressConfig": "apps/micro-app-e2e/cypress.json",
+            "tsConfig": "apps/micro-app-e2e/tsconfig.e2e.json",
+            "devServerTarget": "micro-app:serve"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "micro-app:serve:production"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": ["apps/micro-app-e2e/tsconfig.e2e.json"],
+            "exclude": ["**/node_modules/**", "!apps/micro-app-e2e/**"]
+          }
+        }
+      }
+    },
+    "micro-app1-e2e": {
+      "root": "apps/micro-app1-e2e",
+      "sourceRoot": "apps/micro-app1-e2e/src",
+      "projectType": "application",
+      "architect": {
+        "e2e": {
+          "builder": "@nrwl/cypress:cypress",
+          "options": {
+            "cypressConfig": "apps/micro-app1-e2e/cypress.json",
+            "tsConfig": "apps/micro-app1-e2e/tsconfig.e2e.json",
+            "devServerTarget": "micro-app1:serve"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "micro-app1:serve:production"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": ["apps/micro-app1-e2e/tsconfig.e2e.json"],
+            "exclude": ["**/node_modules/**", "!apps/micro-app1-e2e/**"]
+          }
+        }
+      }
+    }
+  },
+  "cli": {
+    "defaultCollection": "@nrwl/angular",
+    "analytics": false
+  },
+  "schematics": {
+    "@nrwl/angular:application": {
+      "unitTestRunner": "jest",
+      "e2eTestRunner": "cypress"
+    },
+    "@nrwl/angular:library": {
+      "unitTestRunner": "jest"
+    }
+  },
+  "defaultProject": "host"
+}
